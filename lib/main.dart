@@ -33,9 +33,9 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _heightController = TextEditingController();
   final TextEditingController _weightController = TextEditingController();
 
-  double? _bmi;
-  String _text = '';
-  String _message = '';
+  double? bmi;
+  String errorText = 'Please enter your Height and Weight';
+  String status = '';
 
   void calculateBMI() {
     final double? height = double.tryParse(_heightController.value.text);
@@ -43,32 +43,32 @@ class _HomeScreenState extends State<HomeScreen> {
 
     if (height == null || weight == null) {
       setState(() {
-        _text = "Please enter your Height and Weight";
+        errorText = "Please enter your Height and Weight";
       });
       return;
     }
 
     if (height <= 0 || weight <= 0) {
       setState(() {
-        _text = "Your Height and Weight must be positive numbers";
+        errorText = "Your Height and Weight must be positive numbers";
       });
       return;
     }
 
     setState(() {
-      _bmi = weight / pow((height), 2);
-      if (_bmi! < 18.5) {
-        _message = "Underweight";
-      } else if (_bmi! > 18.5 && _bmi! < 25) {
-        _message = 'Normal weight';
-      } else if (_bmi! > 25 && _bmi! < 30) {
-        _message = 'Pre-Obesity';
-      } else if (_bmi! > 30 && _bmi! < 35) {
-        _message = 'Obesity class 1';
-      } else if (_bmi! > 35 && _bmi! < 40) {
-        _message = 'Obesity class 2';
+      bmi = weight / pow((height / 100), 2);
+      if (bmi! < 18.5) {
+        status = "Underweight";
+      } else if (bmi! > 18.5 && bmi! < 25) {
+        status = 'Normal weight';
+      } else if (bmi! > 25 && bmi! < 30) {
+        status = 'Pre-Obesity';
+      } else if (bmi! > 30 && bmi! < 35) {
+        status = 'Obesity class 1';
+      } else if (bmi! > 35 && bmi! < 40) {
+        status = 'Obesity class 2';
       } else {
-        _message = 'Obesity class 3';
+        status = 'Obesity class 3';
       }
     });
   }
@@ -87,9 +87,10 @@ class _HomeScreenState extends State<HomeScreen> {
               TextField(
                 controller: _heightController,
                 keyboardType:TextInputType.number,
+                textInputAction: TextInputAction.next,
                 decoration: const InputDecoration(
-                    labelText: 'Height',
-                    suffixText: 'Meters'
+                  labelText: 'Height (cm)',
+                  suffixText: 'centimeters'
                 ),
               ),
               const SizedBox(
@@ -99,8 +100,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 controller: _weightController,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
-                  labelText: 'Weight',
-                  suffixText: 'Kilograms'
+                  labelText: 'Weight (kg)',
+                  suffixText: 'kilograms',
                 ),
               ),
               const SizedBox(
@@ -119,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 30,
               ),
               Text(
-                _text,
+                errorText,
               ),
               const SizedBox(
                 height: 20,
@@ -133,103 +134,153 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: Colors.grey.shade400,
                     )
                 ),
-                child: Column(
-                  children: [
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          _bmi == null ? '' : _bmi!.toStringAsFixed(2),
-                          style: const TextStyle(
-                              fontSize: 60,
-                              color: Colors.indigo
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text('BMI',
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black45,
-                              ),
-                            ),
-
-                            Text(_message,
-                                style: const TextStyle(
-                                  color: Colors.green,
-                                ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                    const Divider(
-                      thickness: 5,
-                      color: Colors.black45,
-                      indent: 10,
-                      endIndent: 10,
-                    ),
-
-                    const SizedBox(height: 10,),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    children: [
+                      const SizedBox(
+                        height: 50,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Text('Nutritional Status',
-                          style: TextStyle(
-                            color: Colors.black54,
-                            fontSize: 16
+                          Text(
+                            bmi == null ? '00.00' : bmi!.toStringAsFixed(2),
+                            style: const TextStyle(
+                                fontSize: 60,
+                                color: Colors.indigo
                             ),
-                            textAlign: TextAlign.center,
                           ),
-                          const SizedBox(height: 10,),
-                          Container(
-                            decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.vertical(
-                                top: Radius.circular(10),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(status,
+                                  style: TextStyle(
+                                    color:
+                                      status == 'Underweight' ? Colors.blue
+                                    : status == 'Normal weight' ? Colors.green
+                                    : status == 'Pre-Obesity' ? Colors.yellow.shade700
+                                    : status == 'Obesity class 1' ? Colors.orange
+                                    : status == 'Obesity class 2' ? Colors.deepOrangeAccent
+                                    : status == 'Obesity class 3' ? Colors.red
+                                    : null
+                                  ),
                               ),
-                                color: Colors.blue,
-                            ),
-                            child: const Center(child: Text('Underweight: Below 18.5')),
-                          ),
-                          Container(
-                            color: Colors.green,
-                            child: const Center(child: Text('Normal weight: 18.5 - 24.9')),
-                          ),
-                          Container(
-                            color: Colors.yellow,
-                            child: const Center(child: Text('Pre-Obesity: 25.0 - 29.9')),
-                          ),
-                          Container(
-                            color: Colors.orange,
-                            child: const Center(child: Text('Obesity class 1: 30.0 - 34.9')),
-                          ),
-                          Container(
-                            color: Colors.deepOrange,
-                            child: const Center(child: Text('Obesity class 2: 35.0 - 39.9')),
-                          ),
-                          Container(
-                            decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.vertical(
-                                bottom: Radius.circular(10),
+                              const Text('BMI',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.black45,
+                                ),
                               ),
-                              color: Colors.red,
-                            ),
-                            child: const Center(child: Text('Obesity class 3: Above 40')),
+                            ],
                           ),
                         ],
                       ),
-                    ),
 
-                  ],
+                      Container(
+                        height: 5,
+                        decoration: BoxDecoration(
+                          color: Colors.black45,
+                          borderRadius: BorderRadius.circular(50),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey,
+                              blurRadius: 15.0, // soften the shadow
+                              spreadRadius: 1.0, //extend the shadow
+                              offset: Offset(
+                                5.0, // Move to right 5  horizontally
+                                5.0, // Move to bottom 5 Vertically
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+
+                      const SizedBox(height: 30,),
+                      const Text('Nutritional Status',
+                      style: TextStyle(
+                        color: Colors.black54,
+                        fontSize: 16
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 10,),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              height: 25,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.horizontal(
+                                    left: Radius.circular(15)
+                                ),
+                                color: Colors.blue,
+                              ),
+                              child: Center(child: Text('Underweight', style: TextStyle( fontSize: 8, color: Colors.white))),
+
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              height: 25,
+                              color: Colors.green,
+                              child: Center(child: Text('Normal \nweight', style: TextStyle(fontSize: 8, color: Colors.white))),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              height: 25,
+                              color: Colors.yellow.shade700,
+                              child: Center(child: Text('Pre-Obesity', style: TextStyle(fontSize: 8, color: Colors.white))),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              height: 25,
+                              color: Colors.orange,
+                              child: Center(child: Text('Obesity \nclass 1', style: TextStyle(fontSize: 8, color: Colors.white))),
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              height: 25,
+                              color: Colors.deepOrangeAccent,
+                              child: Center(child: Text('Obesity \nclass 2', style: TextStyle(fontSize: 8, color: Colors.white))),
+
+                            ),
+                          ),
+                          Expanded(
+                            child: Container(
+                              height: 25,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.horizontal(
+                                    right: Radius.circular(15)
+                                ),
+                                color: Colors.red,
+                              ),
+                              child: Center(child: Text('Obesity \nclass 3', style: TextStyle(fontSize: 8, color: Colors.white))),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: const [
+                          Text('00', style: TextStyle(color: Colors.transparent,)),
+                          Text('18.5'),
+                          Text('25.0'),
+                          Text('30.0'),
+                          Text('35.0'),
+                          Text('40.0'),
+                          Text('00', style: TextStyle(color: Colors.transparent,)),
+                        ],
+                      ),
+
+                    ],
+                  ),
                 ),
               )
             ],
