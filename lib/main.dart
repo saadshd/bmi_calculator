@@ -185,7 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         decoration: BoxDecoration(
                           color: Colors.black45,
                           borderRadius: BorderRadius.circular(50),
-                          boxShadow: [
+                          boxShadow: const [
                             BoxShadow(
                               color: Colors.grey,
                               blurRadius: 15.0, // soften the shadow
@@ -213,13 +213,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           Expanded(
                             child: Container(
                               height: 25,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 borderRadius: BorderRadius.horizontal(
                                     left: Radius.circular(15)
                                 ),
                                 color: Colors.blue,
                               ),
-                              child: Center(child: Text('Underweight', style: TextStyle( fontSize: 8, color: Colors.white))),
+                              child: const Center(child: Text('Underweight', style: TextStyle( fontSize: 8, color: Colors.white))),
 
                             ),
                           ),
@@ -227,41 +227,41 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Container(
                               height: 25,
                               color: Colors.green,
-                              child: Center(child: Text('Normal \nweight', style: TextStyle(fontSize: 8, color: Colors.white))),
+                              child: const Center(child: Text('Normal \nweight', style: TextStyle(fontSize: 8, color: Colors.white))),
                             ),
                           ),
                           Expanded(
                             child: Container(
                               height: 25,
                               color: Colors.yellow.shade700,
-                              child: Center(child: Text('Pre-Obesity', style: TextStyle(fontSize: 8, color: Colors.white))),
+                              child: const Center(child: Text('Pre-Obesity', style: TextStyle(fontSize: 8, color: Colors.white))),
                             ),
                           ),
                           Expanded(
                             child: Container(
                               height: 25,
                               color: Colors.orange,
-                              child: Center(child: Text('Obesity \nclass 1', style: TextStyle(fontSize: 8, color: Colors.white))),
+                              child: const Center(child: Text('Obesity \nclass 1', style: TextStyle(fontSize: 8, color: Colors.white))),
                             ),
                           ),
                           Expanded(
                             child: Container(
                               height: 25,
                               color: Colors.deepOrangeAccent,
-                              child: Center(child: Text('Obesity \nclass 2', style: TextStyle(fontSize: 8, color: Colors.white))),
+                              child: const Center(child: Text('Obesity \nclass 2', style: TextStyle(fontSize: 8, color: Colors.white))),
 
                             ),
                           ),
                           Expanded(
                             child: Container(
                               height: 25,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 borderRadius: BorderRadius.horizontal(
                                     right: Radius.circular(15)
                                 ),
                                 color: Colors.red,
                               ),
-                              child: Center(child: Text('Obesity \nclass 3', style: TextStyle(fontSize: 8, color: Colors.white))),
+                              child: const Center(child: Text('Obesity \nclass 3', style: TextStyle(fontSize: 8, color: Colors.white))),
                             ),
                           ),
                         ],
