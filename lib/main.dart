@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _weightController = TextEditingController();
 
   double? bmi;
-  String errorText = 'Please enter your Height and Weight';
+  String errorText = '';
   String status = '';
 
   void calculateBMI() {
