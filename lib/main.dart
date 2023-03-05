@@ -146,9 +146,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           Text(
                             bmi == null ? '00.00' : bmi!.toStringAsFixed(2),
-                            style: const TextStyle(
+                            style: TextStyle(
                                 fontSize: 60,
-                                color: Colors.indigo
+                                color:
+                                status == 'Underweight' ? Colors.blue
+                                    : status == 'Normal weight' ? Colors.green
+                                    : status == 'Pre-Obesity' ? Colors.yellow.shade700
+                                    : status == 'Obesity class 1' ? Colors.orange
+                                    : status == 'Obesity class 2' ? Colors.deepOrangeAccent
+                                    : status == 'Obesity class 3' ? Colors.red
+                                    : null
                             ),
                           ),
                           const SizedBox(
